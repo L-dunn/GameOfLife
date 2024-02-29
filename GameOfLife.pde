@@ -118,8 +118,9 @@ public int countNeighbors(int row, int col) {
 public class Life {
   private int myRow, myCol;
   private float x, y, width, height;
-  private boolean alive;
+  private String alive;
   private String myColor;
+  private String myState;
 
   public Life (int row, int col) {
      width = 400/NUM_COLS;
@@ -128,38 +129,59 @@ public class Life {
     myCol = col; 
     x = myCol*width;
     y = myRow*height;
-    alive = Math.random() < .5; // 50/50 chance cell will be alive
+    // 50/50 chance cell will be alive
     if(Math.random() < 0.5){
-      myColor = "blue";
+      alive = "A";
+      if(Math.random() < 0.5){
+        myColor = "B";
+      }else{
+        myColor = "R";
+      }
     }else{
-      myColor = "red";
+      alive = "D";
+      myColor = "";
     }
+    myState = alive + myColor;
     Interactive.add( this ); // register it with the manager
   }
 
   // called by manager
   public void mousePressed () {
-    alive = !alive; //turn cell on and off with mouse press
+    alive = "A";
+    if(Math.random() < 0.5){
+      myColor = "B";
+    }else{
+      myColor = "R";
+    }
   }
   public void draw () {    
-    if (alive != true){
+    if (alive.equals("A")){
       fill(0);
     }else{
       //fill( 150 );
-      if(myColor.equals("blue")){
+      if(myColor.equals("B")){
         fill(0, 0, 255);
       }
-      if(myColor.equals("red")){
+      if(myColor.equals("R")){
         fill(255, 0, 0);
       }
     }
     rect(x, y, width, height);
   }
-  public boolean getLife() {
-    return alive;
+  public String getState() {
+    return alive + myColor;
   }
-  public void setLife(boolean living) {
-    alive = living;
+  public void setState(String living) {
+    alive = living; //living should be "A" or "D"
+    if(alive.equals("A")){
+      if(Math.random() < 0.5){
+        myColor = "B";
+      }else{
+        myColor = "R";
+      }
+    }else{
+      myColor = "";
+    }
   }
   public String getColor(){
     return myColor;
